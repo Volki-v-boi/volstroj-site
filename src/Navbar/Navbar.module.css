@@ -39,3 +39,21 @@
   color: #2d3436;
   text-decoration: none;
 }
+
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column; /* Логотип, меню и телефон встанут друг под друга */
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .menu {
+    gap: 15px;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+
+  .phone {
+    font-size: 1rem;
+  }
+}
