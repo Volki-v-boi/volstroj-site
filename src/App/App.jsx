@@ -3,6 +3,7 @@ import styles from "../App/App.module.css";
 import "../../src/index.css";
 import Hero from "../Hero/Hero";
 import Services from "../Services/Services";
+import Projects from "../Projects/Projects";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <Services />
+      <Projects />
     </div>
   );
 }
