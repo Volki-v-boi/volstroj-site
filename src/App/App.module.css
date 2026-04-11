@@ -1,0 +1,12 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Можно добавить фоновый цвет для всего сайта */
+  background-color: #f9f9f9;
+  /* Подключаем польский шрифт, если нужно, в index.css */
+}
+
+main {
+  flex: 1; /* Чтобы футер всегда прижимался к низу, если контента мало */
+}
