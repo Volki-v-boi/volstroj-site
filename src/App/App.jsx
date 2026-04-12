@@ -4,6 +4,7 @@ import "../../src/index.css";
 import Hero from "../Hero/Hero";
 import Services from "../Services/Services";
 import Projects from "../Projects/Projects";
+import About from "../About/About";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Hero />
       <Services />
       <Projects />
+      <About />
     </div>
   );
 }

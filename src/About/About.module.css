@@ -1,0 +1,149 @@
+.about {
+  padding: 100px 10%;
+  background-color: #ffffff;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+/* Верхний блок: Фото компании + Текст */
+.mainInfo {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.imageSide {
+  flex: 1;
+}
+
+.mainImg {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 20px 20px 0px #e67e22; /* Оранжевый акцентный квадрат */
+  object-fit: cover;
+}
+
+.textSide {
+  flex: 1;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #2d3436;
+}
+
+/* .title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #e67e22;
+  margin-top: 10px;
+} */
+
+.highlight {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #e67e22;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.description {
+  line-height: 1.8;
+  color: #636e72;
+  margin-bottom: 30px;
+}
+
+/* Нижний блок: Наша команда */
+.teamSection {
+  text-align: center;
+}
+
+.teamTitle {
+  font-size: 2rem;
+  margin-bottom: 50px;
+  color: #2d3436;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+}
+
+.memberCard {
+  background: #fdfdfd;
+  padding: 30px 20px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.memberCard:hover {
+  transform: translateY(-5px);
+}
+
+.memberCard img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 4px solid #e67e22;
+  padding: 5px;
+  background-color: #fff;
+}
+
+.memberCard h4 {
+  font-size: 1.3rem;
+  color: #2d3436;
+  margin-bottom: 8px;
+}
+
+.memberCard p {
+  color: #e67e22;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+
+@media (max-width: 968px) {
+  .about {
+    padding: 60px 5%;
+  }
+
+  .mainInfo {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .title::after {
+    margin: 10px auto 0; /* Центрируем полоску под заголовком */
+  }
+
+  .mainImg {
+    box-shadow: 10px 10px 0px #e67e22; /* Уменьшаем тень на мобилках */
+  }
+}
+
+@media (max-width: 480px) {
+  .teamGrid {
+    grid-template-columns: 1fr; /* Сотрудники в одну колонку на узких экранах */
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
