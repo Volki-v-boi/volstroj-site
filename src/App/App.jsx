@@ -5,6 +5,8 @@ import Hero from "../Hero/Hero";
 import Services from "../Services/Services";
 import Projects from "../Projects/Projects";
 import About from "../About/About";
+import ContactForm from "../ContactForm/ContactForm";
+import Footer from "../Footer/Footer";
 
 export default function App() {
   return (
@@ -14,6 +16,8 @@ export default function App() {
       <Services />
       <Projects />
       <About />
+      <ContactForm />
+      <Footer />
     </div>
   );
 }
