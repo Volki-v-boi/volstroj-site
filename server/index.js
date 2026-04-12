@@ -1,35 +1,47 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import "dotenv/config"; // Современный способ подключения dotenv
-
-import Lead from "./models/Lead.js"; // Важно: в Node.js нужно указывать расширение .js
+import "dotenv/config";
+import TelegramBot from "node-telegram-bot-api"; // Новый импорт
+import Lead from "./models/Lead.js";
 
 const app = express();
-
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Подключение к MongoDB
+// Инициализация бота (токен берем из .env)
+const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: false });
+
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Połączono z MongoDB Atlas (ESM)!"))
-  .catch((err) => console.error("❌ Błąd połączenia:", err));
+  .then(() => console.log("✅ Połączono z MongoDB"))
+  .catch((err) => console.error("❌ Błąd:", err));
 
-// Роут для получения заявок
 app.post("/api/leads", async (req, res) => {
   try {
+    // 1. Сохраняем в базу данных
     const newLead = new Lead(req.body);
     await newLead.save();
-    res.status(201).json({ message: "Zgłoszenie wysłane pomyślnie!" });
+
+    // 2. Отправляем сообщение в Telegram
+    const message = `
+🚀 *Nowe zlecenie!*
+👤 *Klient:* ${req.body.name}
+📞 *Tel:* ${req.body.phone}
+🛠️ *Usługa:* ${req.body.service}
+📝 *Opis:* ${req.body.message || "Brak"}
+    `;
+
+    bot.sendMessage(process.env.TELEGRAM_CHAT_ID, message, {
+      parse_mode: "Markdown",
+    });
+
+    res.status(201).json({ message: "Zgłoszenie wysłane!" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Błąd podczas wysyłania zgłoszenia" });
+    res.status(500).json({ error: "Błąd serwera" });
   }
 });
-
-app.get("/", (req, res) => res.send("Serwer VOLSTROY ESM działa!"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Serwer na porcie ${PORT}`));
