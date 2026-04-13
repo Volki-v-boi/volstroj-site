@@ -53,6 +53,16 @@ app.get("/api/projects", async (req, res) => {
     res.status(500).json({ error: "Błąd podczas pobierania projektów" });
   }
 });
+// Добавь это в server/index.js, если еще не сделал
+app.post("/api/projects", async (req, res) => {
+  try {
+    const newProject = new Project(req.body);
+    await newProject.save();
+    res.status(201).json(newProject);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd dodawania projektu" });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Serwer na porcie ${PORT}`));

@@ -1,0 +1,91 @@
+.adminContainer {
+  padding: 120px 10% 60px; /* Отступ сверху, чтобы Navbar не перекрывал */
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.adminContainer h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2d3436;
+  font-size: 2rem;
+}
+
+.adminForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #f9f9f9;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.adminForm label {
+  font-weight: 600;
+  color: #2d3436;
+  margin-bottom: -10px;
+}
+
+.adminForm input[type="text"],
+.adminForm textarea {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.adminForm input:focus,
+.adminForm textarea:focus {
+  border-color: #e67e22; /* Твой оранжевый цвет */
+}
+
+.adminForm textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.adminForm input[type="file"] {
+  background: #fff;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.adminForm button {
+  padding: 18px;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.adminForm button:hover {
+  background-color: #d35400;
+}
+
+.adminForm button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Адаптивность для телефонов */
+@media (max-width: 768px) {
+  .adminContainer {
+    padding: 100px 20px 40px;
+  }
+  .adminForm {
+    padding: 20px;
+  }
+}
