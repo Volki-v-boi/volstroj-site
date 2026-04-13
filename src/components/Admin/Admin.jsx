@@ -2,11 +2,44 @@ import { useState, useEffect } from "react";
 import styles from "./Admin.module.css";
 
 export default function Admin() {
+  // Состояния для авторизации
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+
+  // Состояния для формы и данных
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
+
+  // Твой секретный пароль (измени на свой!)
+  const ADMIN_PASSWORD = "Rusztowania1!";
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+    } else {
+      alert("Błędne hasło!");
+    }
+  };
+
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/projects");
+      const data = await res.json();
+      setProjects(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchProjects();
+    }
+  }, [isAuthenticated]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,15 +47,11 @@ export default function Admin() {
 
     try {
       const imageUrls = [];
-
-      // 1. Отправка фото в Cloudinary
       for (const file of files) {
         const formData = new FormData();
         formData.append("file", file);
-        // ВСТАВЬ СВОЙ ПРЕСЕТ (например: 'ml_default')
         formData.append("upload_preset", "volstroj_preset");
 
-        // ВСТАВЬ СВОЙ CLOUD NAME в ссылку
         const res = await fetch(
           "https://api.cloudinary.com/v1_1/dljagiktx/image/upload",
           {
@@ -37,7 +66,6 @@ export default function Admin() {
         }
       }
 
-      // 2. Сохранение проекта в MongoDB через твой сервер
       const response = await fetch("http://localhost:5000/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -53,6 +81,7 @@ export default function Admin() {
         setTitle("");
         setDescription("");
         setFiles([]);
+        fetchProjects(); // Обновляем список сразу
       }
     } catch (error) {
       console.error("Błąd:", error);
@@ -62,27 +91,37 @@ export default function Admin() {
     }
   };
 
-  const fetchProjects = async () => {
-    const res = await fetch("http://localhost:5000/api/projects");
-    const data = await res.json();
-    setProjects(data);
-  };
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
   const handleDelete = async (id) => {
     if (window.confirm("Czy na pewno chcesz usunąć ten projekt?")) {
       const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
-        fetchProjects(); // Обновляем список после удаления
+        fetchProjects();
       }
     }
   };
 
+  // ВАЖНО: Если не авторизован — показываем только форму входа
+  if (!isAuthenticated) {
+    return (
+      <div className={styles.adminContainer}>
+        <h1>Panel Volstroj - Zaloguj się</h1>
+        <form onSubmit={handleLogin} className={styles.adminForm}>
+          <input
+            type="password"
+            placeholder="Wpisz hasło"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Wejdź</button>
+        </form>
+      </div>
+    );
+  }
+
+  // Если авторизован — показываем админку
   return (
     <div className={styles.adminContainer}>
       <h1>Panel Administratora Volstroj</h1>
@@ -110,8 +149,10 @@ export default function Admin() {
           {loading ? "Wysyłanie..." : "Dodaj realizację"}
         </button>
       </form>
+
       <div className={styles.projectList}>
         <h3>Twoje Realizacje:</h3>
+        {projects.length === 0 && <p>Brak projektów в bazie.</p>}
         {projects.map((project) => (
           <div key={project._id} className={styles.projectItem}>
             <span>{project.title}</span>

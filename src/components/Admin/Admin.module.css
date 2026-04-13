@@ -80,24 +80,69 @@
   cursor: not-allowed;
 }
 
+/* --- Секция списка проектов --- */
 .projectList {
-  margin-top: 50px;
-  border-top: 1px solid #ddd;
-  padding-top: 20px;
+  margin-top: 60px;
+  border-top: 2px solid #eee;
+  padding-top: 30px;
 }
+
+.projectList h3 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: #2d3436;
+  text-align: center;
+}
+
 .projectItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: white;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  padding: 15px 25px;
+  background: #ffffff;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
+
+.projectItem:hover {
+  transform: translateY(-3px);
+  border-color: #e67e22; /* Оранжевый контур при наведении */
+}
+
+.projectItem span {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #2d3436;
+}
+
+/* Кнопка удаления */
 .projectItem button {
   background: #ff4757;
-  padding: 5px 15px;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
   font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.projectItem button:hover {
+  background: #ff6b81;
+  box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+}
+
+/* Сообщение если пусто */
+.projectList p {
+  text-align: center;
+  color: #636e72;
+  font-style: italic;
 }
 
 /* Адаптивность для телефонов */
