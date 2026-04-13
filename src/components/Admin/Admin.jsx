@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Admin.module.css";
 
 export default function Admin() {
@@ -6,6 +6,7 @@ export default function Admin() {
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,6 +62,27 @@ export default function Admin() {
     }
   };
 
+  const fetchProjects = async () => {
+    const res = await fetch("http://localhost:5000/api/projects");
+    const data = await res.json();
+    setProjects(data);
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Czy na pewno chcesz usunąć ten projekt?")) {
+      const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        fetchProjects(); // Обновляем список после удаления
+      }
+    }
+  };
+
   return (
     <div className={styles.adminContainer}>
       <h1>Panel Administratora Volstroj</h1>
@@ -88,6 +110,15 @@ export default function Admin() {
           {loading ? "Wysyłanie..." : "Dodaj realizację"}
         </button>
       </form>
+      <div className={styles.projectList}>
+        <h3>Twoje Realizacje:</h3>
+        {projects.map((project) => (
+          <div key={project._id} className={styles.projectItem}>
+            <span>{project.title}</span>
+            <button onClick={() => handleDelete(project._id)}>Usuń</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -80,6 +80,26 @@
   cursor: not-allowed;
 }
 
+.projectList {
+  margin-top: 50px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+.projectItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.projectItem button {
+  background: #ff4757;
+  padding: 5px 15px;
+  font-size: 0.8rem;
+}
+
 /* Адаптивность для телефонов */
 @media (max-width: 768px) {
   .adminContainer {

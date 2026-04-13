@@ -63,6 +63,16 @@ app.post("/api/projects", async (req, res) => {
     res.status(500).json({ error: "Błąd dodawania projektu" });
   }
 });
+// Удаление проекта
+app.delete('/api/projects/:id', async (req, res) => {
+  try {
+    await Project.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Projekt usunięty!' });
+  } catch (error) {
+    res.status(500).json({ error: 'Błąd podczas usuwania' });
+  }
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Serwer na porcie ${PORT}`));
