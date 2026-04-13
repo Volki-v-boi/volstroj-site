@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 import TelegramBot from "node-telegram-bot-api"; // Новый импорт
 import Lead from "./models/Lead.js";
+import Project from "./models/Project.js";
 
 const app = express();
 app.use(cors());
@@ -40,6 +41,16 @@ app.post("/api/leads", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Błąd serwera" });
+  }
+});
+
+// Получить все проекты
+app.get("/api/projects", async (req, res) => {
+  try {
+    const projects = await Project.find().sort({ createdAt: -1 }); // Свежие сверху
+    res.json(projects);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd podczas pobierania projektów" });
   }
 });
 
