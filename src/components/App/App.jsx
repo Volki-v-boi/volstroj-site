@@ -11,6 +11,8 @@ import ContactForm from "../ContactForm/ContactForm";
 import Footer from "../Footer/Footer";
 // 1. Импортируем твой новый файл админки
 import Admin from "../Admin/Admin";
+import Partner from "../Partner/Partner";
+import Reviews from "../Reviews/Reviews";
 
 export default function App() {
   return (
@@ -25,8 +27,10 @@ export default function App() {
               <main>
                 <Hero />
                 <About />
+                <Partner />
                 <Services />
                 <Projects />
+                <Reviews />
                 <ContactForm />
               </main>
             }
