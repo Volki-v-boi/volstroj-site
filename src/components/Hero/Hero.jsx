@@ -14,7 +14,7 @@ export default function Hero() {
         <h1 className={styles.title}>Wykończenia wnętrz pod klucz</h1>
         <p className={styles.description}>
           Profesjonalne remonty i wykończenia mieszkań oraz domów. Twoje idealne
-          wnętrze bez stresu и opóźnień z VOLSTROY.
+          wnętrze bez stresu и opóźnień z VOLSTROJ.
         </p>
         <div className={styles.benefits}>
           <span>✓ Jakość</span>

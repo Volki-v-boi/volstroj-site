@@ -5,6 +5,7 @@ import "dotenv/config";
 import TelegramBot from "node-telegram-bot-api"; // Новый импорт
 import Lead from "./models/Lead.js";
 import Project from "./models/Project.js";
+import Review from "./models/Reviews.js";
 
 const app = express();
 app.use(cors());
@@ -64,15 +65,35 @@ app.post("/api/projects", async (req, res) => {
   }
 });
 // Удаление проекта
-app.delete('/api/projects/:id', async (req, res) => {
+app.delete("/api/projects/:id", async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Projekt usunięty!' });
+    res.json({ message: "Projekt usunięty!" });
   } catch (error) {
-    res.status(500).json({ error: 'Błąd podczas usuwania' });
+    res.status(500).json({ error: "Błąd podczas usuwania" });
+  }
+});
+app.post("/api/reviews", async (req, res) => {
+  try {
+    const newReview = new Review(req.body);
+    await newReview.save();
+    res.status(201).json({ message: "Opinia wysłana do moderacji!" });
+  } catch (error) {
+    res.status(500).json({ error: "Błąd wysyłania opinii" });
   }
 });
 
+// 2. Получить только одобренные отзывы (для сайта)
+app.get("/api/reviews", async (req, res) => {
+  try {
+    const approvedReviews = await Review.find({ status: "approved" }).sort({
+      createdAt: -1,
+    });
+    res.json(approvedReviews);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd pobierania opinii" });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Serwer na porcie ${PORT}`));
