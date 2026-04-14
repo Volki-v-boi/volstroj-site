@@ -14,7 +14,7 @@ export default function Admin() {
   const [projects, setProjects] = useState([]);
 
   // Твой секретный пароль (измени на свой!)
-  const ADMIN_PASSWORD = "Rusztowania1!";
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
   const handleLogin = (e) => {
     e.preventDefault();
