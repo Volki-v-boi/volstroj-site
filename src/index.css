@@ -28,3 +28,8 @@ a {
 ul {
   list-style: none;
 }
+
+/* Только это и ничего больше для галереи */
+.pswp__img {
+  object-fit: contain !important;
+}

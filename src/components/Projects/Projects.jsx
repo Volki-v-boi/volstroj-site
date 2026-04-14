@@ -21,43 +21,44 @@ export default function Projects() {
             {/* Обертка для галереи конкретного проекта */}
             <Gallery>
               <div className={styles.imageWrapper}>
-                {/* Первый Item — это наша обложка, которую видно всегда */}
-                <Item
-                  original={project.images[0]}
-                  thumbnail={project.images[0]}
-                  width="1600"
-                  height="1066"
+                {/* Чистая обложка, которая слушается только твоего CSS */}
+                <div
+                  className={styles.coverContainer}
+                  onClick={() =>
+                    document
+                      .getElementById(`gallery-item-${project._id}-0`)
+                      .click()
+                  }
                 >
-                  {({ ref, open }) => (
-                    <div
-                      onClick={open}
-                      ref={ref}
-                      className={styles.coverContainer}
-                    >
-                      <img
-                        src={project.images[0]}
-                        alt={project.title}
-                        className={styles.image}
-                      />
-                      <div className={styles.overlay}>
-                        Zobacz zdjęcia ({project.images.length})
-                      </div>
-                    </div>
-                  )}
-                </Item>
+                  <img
+                    src={project.images[0]}
+                    alt={project.title}
+                    className={styles.image}
+                  />
+                  <div className={styles.overlay}>
+                    Zobacz zdjęcia ({project.images.length})
+                  </div>
+                </div>
 
-                {/* Остальные фото проекта (скрыты, но доступны в галерее после клика на обложку) */}
+                {/* Полностью скрытая галерея для Photoswipe */}
                 <div style={{ display: "none" }}>
-                  {project.images.slice(1).map((img, index) => (
+                  {project.images.map((img, index) => (
                     <Item
                       key={index}
                       original={img}
                       thumbnail={img}
-                      width="1600"
-                      height="1066"
+                      width="1800"
+                      height="1800"
                     >
                       {({ ref, open }) => (
-                        <img ref={ref} onClick={open} src={img} />
+                        <img
+                          id={`gallery-item-${project._id}-${index}`}
+                          ref={ref}
+                          onClick={open}
+                          src={img}
+                          alt="projekt volstroj"
+                          style={{ cursor: "pointer", objectFit: "contain" }}
+                        />
                       )}
                     </Item>
                   ))}
