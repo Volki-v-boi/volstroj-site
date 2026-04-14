@@ -6,6 +6,7 @@ export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    email: "",
     service: "",
     message: "",
   });
@@ -65,6 +66,15 @@ export default function ContactForm() {
               value={formData.phone}
               onChange={handleChange}
               required
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Twój adres e-mail"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
           <div className={styles.inputGroup}>

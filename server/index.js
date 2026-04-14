@@ -30,6 +30,7 @@ app.post("/api/leads", async (req, res) => {
 🚀 *Nowe zlecenie!*
 👤 *Klient:* ${req.body.name}
 📞 *Tel:* ${req.body.phone}
+📧 *Email:* ${req.body.email || "Nie podano"}
 🛠️ *Usługa:* ${req.body.service}
 📝 *Opis:* ${req.body.message || "Brak"}
     `;
@@ -92,6 +93,38 @@ app.get("/api/reviews", async (req, res) => {
     res.json(approvedReviews);
   } catch (error) {
     res.status(500).json({ error: "Błąd pobierania opinii" });
+  }
+});
+app.get("/api/admin/reviews", async (req, res) => {
+  try {
+    const allReviews = await Review.find().sort({ createdAt: -1 });
+    res.json(allReviews);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd pobierania wszystkich opinii" });
+  }
+});
+
+// 2. Одобрить отзыв (изменить статус с pending на approved)
+app.patch("/api/reviews/:id/approve", async (req, res) => {
+  try {
+    const updatedReview = await Review.findByIdAndUpdate(
+      req.params.id,
+      { status: "approved" },
+      { new: true },
+    );
+    res.json(updatedReview);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd podczas zatwierdzania opinii" });
+  }
+});
+
+// 3. Удалить отзыв (если это спам)
+app.delete("/api/reviews/:id", async (req, res) => {
+  try {
+    await Review.findByIdAndDelete(req.params.id);
+    res.json({ message: "Opinia usunięta" });
+  } catch (error) {
+    res.status(500).json({ error: "Błąd podczas usuwania opinii" });
   }
 });
 

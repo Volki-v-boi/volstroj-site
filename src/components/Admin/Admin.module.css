@@ -145,6 +145,31 @@
   font-style: italic;
 }
 
+.reviewItem {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+}
+
+.pending {
+  border-left: 5px solid #e67e22; /* Оранжевая полоска для новых */
+  background: #fff9f4;
+}
+
+.approveBtn {
+  background: #2ecc71 !important;
+  margin-right: 10px;
+}
+
+.deleteBtn {
+  background: #e74c3c !important;
+}
+
 /* Адаптивность для телефонов */
 @media (max-width: 768px) {
   .adminContainer {

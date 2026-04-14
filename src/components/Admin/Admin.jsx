@@ -5,6 +5,7 @@ export default function Admin() {
   // Состояния для авторизации
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [allReviews, setAllReviews] = useState([]);
 
   // Состояния для формы и данных
   const [title, setTitle] = useState("");
@@ -35,9 +36,17 @@ export default function Admin() {
     }
   };
 
+  // Функция загрузки ВСЕХ отзывов (и плохих, и хороших, и новых)
+  const fetchAllReviews = async () => {
+    const res = await fetch("http://localhost:5000/api/admin/reviews");
+    const data = await res.json();
+    setAllReviews(data);
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchProjects();
+      fetchAllReviews();
     }
   }, [isAuthenticated]);
 
@@ -102,6 +111,22 @@ export default function Admin() {
     }
   };
 
+  const handleApproveReview = async (id) => {
+    const res = await fetch(`http://localhost:5000/api/reviews/${id}/approve`, {
+      method: "PATCH",
+    });
+    if (res.ok) fetchAllReviews(); // Обновляем список
+  };
+
+  const handleDeleteReview = async (id) => {
+    if (window.confirm("Usunąć tę opinię?")) {
+      const res = await fetch(`http://localhost:5000/api/reviews/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) fetchAllReviews();
+    }
+  };
+
   // ВАЖНО: Если не авторизован — показываем только форму входа
   if (!isAuthenticated) {
     return (
@@ -159,6 +184,40 @@ export default function Admin() {
             <button onClick={() => handleDelete(project._id)}>Usuń</button>
           </div>
         ))}
+      </div>
+
+      <div className={styles.adminSection}>
+        <h3>Moderacja Opinii</h3>
+        <div className={styles.reviewList}>
+          {allReviews.map((rev) => (
+            <div
+              key={rev._id}
+              className={`${styles.reviewItem} ${rev.status === "pending" ? styles.pending : ""}`}
+            >
+              <div>
+                <strong>{rev.name}</strong> ({rev.rating} ★)
+                <p>{rev.text}</p>
+                <small>Status: {rev.status}</small>
+              </div>
+              <div className={styles.actions}>
+                {rev.status === "pending" && (
+                  <button
+                    className={styles.approveBtn}
+                    onClick={() => handleApproveReview(rev._id)}
+                  >
+                    Zatwierdź
+                  </button>
+                )}
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => handleDeleteReview(rev._id)}
+                >
+                  Usuń
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
