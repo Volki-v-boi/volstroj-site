@@ -1,4 +1,6 @@
 import styles from "./Navbar.module.css";
+// import logoImg from "../../assets/logo.png";
+
 export default function Navbar() {
   return (
     <nav className={styles.nav}>
