@@ -33,3 +33,14 @@ ul {
 .pswp__img {
   object-fit: contain !important;
 }
+
+/* Стили для подписи в галерее */
+.pswp__caption__center {
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #eee;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}

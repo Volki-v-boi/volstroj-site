@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import "photoswipe/dist/photoswipe.css"; // Важно для стилей галереи
+import "photoswipe/dist/photoswipe.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import styles from "./Projects.module.css";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
+  const [expandedId, setExpandedId] = useState(null); // Состояние раскрытия
 
   useEffect(() => {
     fetch("http://localhost:5000/api/projects")
@@ -12,16 +13,18 @@ export default function Projects() {
       .then((data) => setProjects(data));
   }, []);
 
+  const toggleExpand = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
   return (
     <section id="projects" className={styles.projects}>
       <h2 className={styles.title}>Nasze Realizacje</h2>
       <div className={styles.grid}>
         {projects.map((project) => (
           <div key={project._id} className={styles.card}>
-            {/* Обертка для галереи конкретного проекта */}
             <Gallery>
               <div className={styles.imageWrapper}>
-                {/* Чистая обложка, которая слушается только твоего CSS */}
                 <div
                   className={styles.coverContainer}
                   onClick={() =>
@@ -40,7 +43,6 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* Полностью скрытая галерея для Photoswipe */}
                 <div style={{ display: "none" }}>
                   {project.images.map((img, index) => (
                     <Item
@@ -57,7 +59,6 @@ export default function Projects() {
                           onClick={open}
                           src={img}
                           alt="projekt volstroj"
-                          style={{ cursor: "pointer", objectFit: "contain" }}
                         />
                       )}
                     </Item>
@@ -68,7 +69,22 @@ export default function Projects() {
 
             <div className={styles.content}>
               <h3>{project.title}</h3>
-              <p>{project.description}</p>
+              {/* Текст меняет класс при клике */}
+              <p
+                className={
+                  expandedId === project._id
+                    ? styles.expanded
+                    : styles.collapsed
+                }
+              >
+                {project.description}
+              </p>
+              <span
+                className={styles.readMore}
+                onClick={() => toggleExpand(project._id)}
+              >
+                {expandedId === project._id ? "Zwiń ▲" : "Czytaj więcej ▼"}
+              </span>
             </div>
           </div>
         ))}
