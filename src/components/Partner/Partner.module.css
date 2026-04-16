@@ -1,54 +1,159 @@
 .partner {
   padding: 100px 10%;
-  background: #fdfdfd;
+  background: #ffffff;
 }
+
 .container {
   display: flex;
-  align-items: center;
-  gap: 60px;
+  align-items: flex-start; /* Выравнивание по верху */
+  gap: 80px;
 }
+
 .textSide {
   flex: 1;
+  position: sticky; /* Текст будет "залипать" при скролле, пока листаешь партнеров */
+  top: 120px;
+  text-align: left;
 }
+
 .imageSide {
-  flex: 1;
+  flex: 1.5;
+  display: grid;
+  /* Две колонки, если место позволяет */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
 }
-.imageSide img {
+
+/* Стили карточки */
+.cardWrapper {
+  position: relative;
   width: 100%;
-  border-radius: 15px;
-  box-shadow: -20px 20px 0 #2d3436;
+  height: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+/* Оверлей с контактами (появляется при наведении) */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(45, 52, 54, 0.95); /* Темный стильный фон */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 20px;
+  text-align: center;
+}
+
+.cardWrapper:hover .overlay {
+  opacity: 1;
+}
+
+.cardWrapper:hover .mainImage {
+  transform: scale(1.1);
+}
+
+.overlay h3 {
+  color: #e67e22;
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+}
+
+.overlay p {
+  color: #fff;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.contactBtn {
+  border: 1px solid #e67e22;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: 0.3s;
+}
+
+.contactBtn:hover {
+  background: #e67e22;
+}
+
+/* Плашка с именем (видима всегда) */
+.imageLabel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  text-align: left;
+}
+
+/* Декор */
 .line {
   width: 60px;
   height: 4px;
   background: #e67e22;
   margin: 15px 0 25px;
 }
+
 .highlight {
   font-size: 1.2rem;
   font-weight: 700;
   color: #e67e22;
   margin-bottom: 20px;
 }
-.list {
-  list-style: none;
-  padding: 0;
-  margin-top: 30px;
-}
-.list li {
-  margin-bottom: 12px;
-  font-weight: 500;
+
+.description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin-bottom: 16px;
+  max-width: 700px;
 }
 
-@media (max-width: 968px) {
+.description:last-child {
+  margin-bottom: 0;
+}
+/* Адаптивность */
+@media (max-width: 1100px) {
   .container {
     flex-direction: column;
-    text-align: center;
+    gap: 50px;
   }
-  .imageSide img {
-    box-shadow: none;
+  .textSide {
+    position: static;
+    text-align: center;
   }
   .line {
     margin: 15px auto;
+  }
+  .imageSide {
+    width: 100%;
   }
 }
