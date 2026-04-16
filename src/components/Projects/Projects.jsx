@@ -8,7 +8,7 @@ export default function Projects() {
   const [expandedId, setExpandedId] = useState(null); // Состояние раскрытия
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/projects")
+    fetch(`${import.meta.env.VITE_API_URL}/api/projects`)
       .then((res) => res.json())
       .then((data) => setProjects(data));
   }, []);

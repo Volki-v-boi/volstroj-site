@@ -10,7 +10,7 @@ export default function Reviews() {
   useEffect(() => {
     const fetchApprovedReviews = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/reviews");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews`);
         const data = await res.json();
         setReviews(data);
       } catch (err) {
@@ -24,7 +24,7 @@ export default function Reviews() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/reviews", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

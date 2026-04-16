@@ -28,7 +28,7 @@ export default function Admin() {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/projects");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`);
       const data = await res.json();
       setProjects(data);
     } catch (err) {
@@ -38,7 +38,9 @@ export default function Admin() {
 
   // Функция загрузки ВСЕХ отзывов (и плохих, и хороших, и новых)
   const fetchAllReviews = async () => {
-    const res = await fetch("http://localhost:5000/api/admin/reviews");
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/admin/reviews`,
+    );
     const data = await res.json();
     setAllReviews(data);
   };
@@ -75,15 +77,18 @@ export default function Admin() {
         }
       }
 
-      const response = await fetch("http://localhost:5000/api/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          description,
-          images: imageUrls,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title,
+            description,
+            images: imageUrls,
+          }),
+        },
+      );
 
       if (response.ok) {
         alert("Projekt Volstroj dodany!");
@@ -102,9 +107,12 @@ export default function Admin() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Czy na pewno chcesz usunąć ten projekt?")) {
-      const res = await fetch(`http://localhost:5000/api/projects/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
       if (res.ok) {
         fetchProjects();
       }
@@ -112,17 +120,23 @@ export default function Admin() {
   };
 
   const handleApproveReview = async (id) => {
-    const res = await fetch(`http://localhost:5000/api/reviews/${id}/approve`, {
-      method: "PATCH",
-    });
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/reviews/${id}/approve`,
+      {
+        method: "PATCH",
+      },
+    );
     if (res.ok) fetchAllReviews(); // Обновляем список
   };
 
   const handleDeleteReview = async (id) => {
     if (window.confirm("Usunąć tę opinię?")) {
-      const res = await fetch(`http://localhost:5000/api/reviews/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/reviews/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
       if (res.ok) fetchAllReviews();
     }
   };
