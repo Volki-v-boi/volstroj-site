@@ -8,7 +8,7 @@ export default function Footer() {
       <div className={styles.container}>
         <div className={styles.brand}>
           <div className={styles.logo}>
-            VOL<span>STROY</span>
+            VOL<span>STROJ</span>
           </div>
           <p>
             Profesjonalne wykończenia wnętrz pod klucz. Realizujemy Twoje
