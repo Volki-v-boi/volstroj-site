@@ -6,21 +6,29 @@ export default function Hero() {
     <section
       className={styles.hero}
       style={{
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url(${heroImg})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${heroImg})`, // Чуть темнее для читаемости
       }}
     >
       <div className={styles.overlay}></div>
       <div className={styles.content}>
-        <h1 className={styles.title}>Wykończenia wnętrz pod klucz</h1>
+        {/* Добавляем город - это КРИТИЧНО для SEO */}
+        <h1 className={styles.title}>
+          Wykończenia wnętrz i remonty mieszkań w Szczecinie
+        </h1>
+
         <p className={styles.description}>
-          Profesjonalne remonty i wykończenia mieszkań oraz domów. Twoje idealne
-          wnętrze bez stresu и opóźnień z VOLSTROJ.
+          Kompleksowe remonty pod klucz. Realizujemy Twoje marzenia o idealnym
+          wnętrzu z gwarancją jakości, terminowości i bez ukrytych kosztów.
         </p>
+
         <div className={styles.benefits}>
-          <span>✓ Jakość</span>
+          <span>✓ Bezpłatna wycena</span>{" "}
+          {/* "Darmowa wycena" - сильный запрос */}
           <span>✓ Terminowość</span>
-          <span>✓ Gwarancja</span>
+          <span>✓ Gwarancja 24 m-ce</span>{" "}
+          {/* Конкретика (24 месяца) внушает больше доверия */}
         </div>
+
         <a href="#contact" className={styles.btn}>
           Zamów darmową wycenę
         </a>
