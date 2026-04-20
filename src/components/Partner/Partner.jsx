@@ -1,6 +1,6 @@
 import styles from "./Partner.module.css";
 // Импорт фото (или пути к ним)
-import designer1 from "../../assets/logo.png";
+import designer1 from "../../assets/justyna.png";
 // import designer2 from "../../assets/designer2.jpg";
 
 export default function Partner() {
@@ -8,12 +8,12 @@ export default function Partner() {
   const partners = [
     {
       id: 1,
-      name: "Anna Nowak",
-      studio: "Design Flow",
+      name: "Justyna Jakubowska",
+      studio: "NAPZ",
       img: designer1,
-      phone: "+48 111 222 333",
-      ig: "https://instagram.com",
-      email: "anna@design.pl",
+      phone: "+48 513 560 443",
+      ig: "https://www.instagram.com/napz_projektowanie_wnetrz/",
+      email: "napz.justynajakubowska@gmail.com",
     },
     // {
     //   id: 2,
