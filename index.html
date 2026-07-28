@@ -11,6 +11,70 @@
     <title>
       Wykończenia wnętrz Szczecin | Remonty mieszkań pod klucz - Volstroj
     </title>
+
+    <!-- Canonical: важно после смены домена на .pl — без этого Google может
+         индексировать и volstroj.vercel.app, и .pl как дубли -->
+    <link rel="canonical" href="https://volstroj.pl/" />
+
+    <!-- Open Graph — карточка при шаринге в соцсетях/мессенджерах -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:site_name" content="Volstroj" />
+    <meta
+      property="og:title"
+      content="Wykończenia wnętrz Szczecin | Remonty mieszkań pod klucz - Volstroj"
+    />
+    <meta
+      property="og:description"
+      content="Remonty mieszkań i domów pod klucz w Szczecinie. Profesjonalna ekipa, współpraca z architektem i gwarancja jakości. Sprawdź nasze realizacje!"
+    />
+    <meta property="og:url" content="https://volstroj.pl/" />
+    <meta property="og:image" content="https://volstroj.pl/og-cover.jpg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Wykończenia wnętrz Szczecin | Remonty mieszkań pod klucz - Volstroj"
+    />
+    <meta
+      name="twitter:description"
+      content="Remonty mieszkań i domów pod klucz w Szczecinie. Profesjonalna ekipa, współpraca z architektem i gwarancja jakości."
+    />
+    <meta name="twitter:image" content="https://volstroj.pl/og-cover.jpg" />
+
+    <!-- JSON-LD: структурированные данные локального бизнеса.
+         Это то, что помогает попасть в Google Maps / панель знаний.
+         ВАЖНО: замени telephone, streetAddress, geo на реальные —
+         это должно 1:1 совпадать с тем, что будет в Google Business Profile. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HomeAndConstructionBusiness",
+        "name": "Volstroj",
+        "image": "https://volstroj.pl/og-cover.jpg",
+        "url": "https://volstroj.pl/",
+        "telephone": "+48660018024",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "ZMIEŃ NA REALNY ADRES",
+          "addressLocality": "Szczecin",
+          "postalCode": "70-000",
+          "addressCountry": "PL"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Szczecin"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

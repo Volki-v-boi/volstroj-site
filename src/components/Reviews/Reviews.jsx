@@ -43,9 +43,19 @@ export default function Reviews() {
     <section id="reviews" className={styles.reviews}>
       <h2>Opinie naszych klientów</h2>
 
-      {/* Список отзывов из базы */}
+      {/* Список отзывов из базы.
+          ВАЖНО: сюда НЕ добавляем фейковые/примерные отзывы — это фейковые
+          testimonials, за это можно получить проблемы и с законом (запрет
+          fake reviews в ЕС), и с Google (снятие карточки бизнеса).
+          Реальное решение — как только появятся первые настоящие клиенты,
+          попросить оставить отзыв (можно прямо здесь, форма ниже уже есть). */}
       <div className={styles.grid}>
-        {reviews.length === 0 && <p>Brak opinii. Bądź pierwszy!</p>}
+        {reviews.length === 0 && (
+          <p className={styles.emptyState}>
+            Dopiero zaczynamy zbierać opinie — zostaw pierwszą i pomóż innym
+            nam zaufać!
+          </p>
+        )}
         {reviews.map((rev) => (
           <div key={rev._id} className={styles.card}>
             <div className={styles.stars}>{"★".repeat(rev.rating)}</div>
@@ -54,6 +64,20 @@ export default function Reviews() {
           </div>
         ))}
       </div>
+
+      {reviews.length > 0 && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AggregateRating",
+            itemReviewed: { "@type": "LocalBusiness", name: "Volstroj" },
+            ratingValue: (
+              reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+            ).toFixed(1),
+            reviewCount: reviews.length,
+          })}
+        </script>
+      )}
 
       {/* ФОРМА ДОБАВЛЕНИЯ (которой не было) */}
       <div className={styles.addReview}>
