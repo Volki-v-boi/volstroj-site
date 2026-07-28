@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import styles from "./App.module.css";
 import "../../index.css";
 
@@ -13,35 +14,41 @@ import Footer from "../Footer/Footer";
 import Admin from "../Admin/Admin";
 import Partner from "../Partner/Partner";
 import Reviews from "../Reviews/Reviews";
+import ServicePage from "../ServicePage/ServicePage";
 
 export default function App() {
   return (
-    <Router>
-      <div className={styles.container}>
-        <Navbar />
+    <HelmetProvider>
+      <Router>
+        <div className={styles.container}>
+          <Navbar />
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <main>
-                <Hero />
-                <About />
-                <Partner />
-                <Services />
-                <Projects />
-                <Reviews />
-                <ContactForm />
-              </main>
-            }
-          />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <main>
+                  <Hero />
+                  <About />
+                  <Partner />
+                  <Services />
+                  <Projects />
+                  <Reviews />
+                  <ContactForm />
+                </main>
+              }
+            />
 
-          {/* 2. Заменяем AdminPlaceholder на реальный компонент Admin */}
-          <Route path="/admin-volstroy" element={<Admin />} />
-        </Routes>
+            {/* Отдельная страница под каждую услугу — для SEO по конкретным запросам */}
+            <Route path="/usluga/:slug" element={<ServicePage />} />
 
-        <Footer />
-      </div>
-    </Router>
+            {/* 2. Заменяем AdminPlaceholder на реальный компонент Admin */}
+            <Route path="/admin-volstroy" element={<Admin />} />
+          </Routes>
+
+          <Footer />
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 }

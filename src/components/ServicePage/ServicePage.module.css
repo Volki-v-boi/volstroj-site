@@ -1,0 +1,70 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 100px 24px 60px;
+  line-height: 1.6;
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 24px;
+}
+
+.breadcrumb a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.intro {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.paragraph {
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.ctaBox {
+  margin: 40px 0;
+  padding: 24px;
+  background: #f4f4f4;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.ctaBtn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 28px;
+  background: #1e2327;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.otherServices h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.otherServices ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.otherServices li a {
+  color: #1e2327;
+  text-decoration: underline;
+}
