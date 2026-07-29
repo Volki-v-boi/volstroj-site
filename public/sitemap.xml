@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://volstroj.pl/</loc>
+    <loc>https://www.volstroj.pl/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://volstroj.pl/usluga/wykonczenia-pod-klucz</loc>
+    <loc>https://www.volstroj.pl/usluga/wykonczenia-pod-klucz</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://volstroj.pl/usluga/uklad-plytek</loc>
+    <loc>https://www.volstroj.pl/usluga/uklad-plytek</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://volstroj.pl/usluga/malowanie-i-gladzie</loc>
+    <loc>https://www.volstroj.pl/usluga/malowanie-i-gladzie</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://volstroj.pl/usluga/instalacje</loc>
+    <loc>https://www.volstroj.pl/usluga/instalacje</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://volstroj.pl/usluga/zabudowy-gk</loc>
+    <loc>https://www.volstroj.pl/usluga/zabudowy-gk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://volstroj.pl/usluga/montaz-podlog</loc>
+    <loc>https://www.volstroj.pl/usluga/montaz-podlog</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

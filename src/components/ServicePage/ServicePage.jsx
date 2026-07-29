@@ -12,7 +12,7 @@ export default function ServicePage() {
     return <Navigate to="/" replace />;
   }
 
-  const canonicalUrl = `https://volstroj.pl/usluga/${service.slug}`;
+  const canonicalUrl = `https://www.volstroj.pl/usluga/${service.slug}`;
 
   return (
     <>
