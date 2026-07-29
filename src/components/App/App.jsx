@@ -15,6 +15,7 @@ import Admin from "../Admin/Admin";
 import Partner from "../Partner/Partner";
 import Reviews from "../Reviews/Reviews";
 import ServicePage from "../ServicePage/ServicePage";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 export default function App() {
   return (
@@ -32,8 +33,12 @@ export default function App() {
                   <About />
                   <Partner />
                   <Services />
-                  <Projects />
-                  <Reviews />
+                  <ErrorBoundary>
+                    <Projects />
+                  </ErrorBoundary>
+                  <ErrorBoundary>
+                    <Reviews />
+                  </ErrorBoundary>
                   <ContactForm />
                 </main>
               }

@@ -12,7 +12,12 @@ export default function Reviews() {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews`);
         const data = await res.json();
-        setReviews(data);
+        // Защита: если бэкенд ещё "просыпается" (cold start) и отвечает
+        // не массивом (ошибка, пустой объект и т.п.) — не обновляем состояние,
+        // иначе reviews.map() ниже упадёт и весь сайт погаснет белым экраном.
+        if (Array.isArray(data)) {
+          setReviews(data);
+        }
       } catch (err) {
         console.error("Błąd pobierania opinii:", err);
       }
