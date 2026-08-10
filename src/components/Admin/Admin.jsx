@@ -5,13 +5,18 @@ export default function Admin() {
   // Состояния для авторизации
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [allReviews, setAllReviews] = useState([]);
 
-  // Секретный ключ держим ТОЛЬКО в памяти этой сессии браузера —
-  // он больше не встроен в JS-бандл сайта (раньше был виден всем через
-  // "просмотр кода страницы", даже без входа в админку).
-  const [adminSecret, setAdminSecret] = useState("");
+  // Секретный ключ храним в localStorage, чтобы не вводить пароль заново
+  // при каждом заходе в админку. Компромисс: любой, кто получит физический
+  // доступ к ЭТОМУ браузеру на ЭТОМ устройстве, попадёт в админку без пароля —
+  // для панели без данных клиентов/платежей это приемлемо. Разлогиниться
+  // можно кнопкой "Wyloguj" — она чистит сохранённое значение.
+  const [adminSecret, setAdminSecret] = useState(
+    () => localStorage.getItem("volstroj_admin_secret") || "",
+  );
 
   // Состояния для формы и данных
   const [title, setTitle] = useState("");
@@ -19,6 +24,23 @@ export default function Admin() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
+
+  // Если ключ уже сохранён с прошлого раза — пробуем войти автоматически.
+  // Настоящую проверку "а точно ли ключ ещё верный" сделает сервер на первом
+  // же запросе (fetchAllReviews) — если он ответит 401, разлогиниваем ниже.
+  useEffect(() => {
+    if (adminSecret) {
+      setIsAuthenticated(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("volstroj_admin_secret");
+    setAdminSecret("");
+    setIsAuthenticated(false);
+    setPassword("");
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,6 +55,9 @@ export default function Admin() {
         },
       );
       if (res.ok) {
+        if (rememberMe) {
+          localStorage.setItem("volstroj_admin_secret", password);
+        }
         setAdminSecret(password);
         setIsAuthenticated(true);
       } else {
@@ -61,6 +86,10 @@ export default function Admin() {
         `${import.meta.env.VITE_API_URL}/api/admin/reviews`,
         { headers: { "x-admin-secret": adminSecret } },
       );
+      if (res.status === 401) {
+        handleLogout();
+        return;
+      }
       const data = await res.json();
       if (Array.isArray(data)) setAllReviews(data);
     } catch (err) {
@@ -186,6 +215,14 @@ export default function Admin() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.9rem" }}>
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            Zapamiętaj mnie na tym urządzeniu
+          </label>
           <button type="submit">Wejdź</button>
           {loginError && <p style={{ color: "red" }}>{loginError}</p>}
         </form>
@@ -196,7 +233,12 @@ export default function Admin() {
   // Если авторизован — показываем админку
   return (
     <div className={styles.adminContainer}>
-      <h1>Panel Administratora Volstroj</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Panel Administratora Volstroj</h1>
+        <button onClick={handleLogout} type="button">
+          Wyloguj
+        </button>
+      </div>
       <form onSubmit={handleSubmit} className={styles.adminForm}>
         <input
           type="text"
