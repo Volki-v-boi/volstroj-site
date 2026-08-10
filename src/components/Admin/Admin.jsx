@@ -5,7 +5,13 @@ export default function Admin() {
   // Состояния для авторизации
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
   const [allReviews, setAllReviews] = useState([]);
+
+  // Секретный ключ держим ТОЛЬКО в памяти этой сессии браузера —
+  // он больше не встроен в JS-бандл сайта (раньше был виден всем через
+  // "просмотр кода страницы", даже без входа в админку).
+  const [adminSecret, setAdminSecret] = useState("");
 
   // Состояния для формы и данных
   const [title, setTitle] = useState("");
@@ -14,15 +20,26 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
 
-  // Твой секретный пароль (измени на свой!)
-  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-    } else {
-      alert("Błędne hasło!");
+    setLoginError("");
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        },
+      );
+      if (res.ok) {
+        setAdminSecret(password);
+        setIsAuthenticated(true);
+      } else {
+        setLoginError("Błędne hasło!");
+      }
+    } catch {
+      setLoginError("Błąd połączenia z serwerem");
     }
   };
 
@@ -30,19 +47,25 @@ export default function Admin() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`);
       const data = await res.json();
-      setProjects(data);
+      if (Array.isArray(data)) setProjects(data);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Функция загрузки ВСЕХ отзывов (и плохих, и хороших, и новых)
+  // Функция загрузки ВСЕХ отзывов (и плохих, и хороших, и новых) —
+  // требует ключ, т.к. это админский эндпоинт
   const fetchAllReviews = async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/admin/reviews`,
-    );
-    const data = await res.json();
-    setAllReviews(data);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/admin/reviews`,
+        { headers: { "x-admin-secret": adminSecret } },
+      );
+      const data = await res.json();
+      if (Array.isArray(data)) setAllReviews(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
@@ -50,6 +73,7 @@ export default function Admin() {
       fetchProjects();
       fetchAllReviews();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
   const handleSubmit = async (e) => {
@@ -81,7 +105,10 @@ export default function Admin() {
         `${import.meta.env.VITE_API_URL}/api/projects`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-secret": adminSecret,
+          },
           body: JSON.stringify({
             title,
             description,
@@ -96,6 +123,8 @@ export default function Admin() {
         setDescription("");
         setFiles([]);
         fetchProjects(); // Обновляем список сразу
+      } else {
+        alert("Nie udało się dodać projektu (błąd autoryzacji lub serwera)");
       }
     } catch (error) {
       console.error("Błąd:", error);
@@ -111,6 +140,7 @@ export default function Admin() {
         `${import.meta.env.VITE_API_URL}/api/projects/${id}`,
         {
           method: "DELETE",
+          headers: { "x-admin-secret": adminSecret },
         },
       );
       if (res.ok) {
@@ -124,6 +154,7 @@ export default function Admin() {
       `${import.meta.env.VITE_API_URL}/api/reviews/${id}/approve`,
       {
         method: "PATCH",
+        headers: { "x-admin-secret": adminSecret },
       },
     );
     if (res.ok) fetchAllReviews(); // Обновляем список
@@ -135,6 +166,7 @@ export default function Admin() {
         `${import.meta.env.VITE_API_URL}/api/reviews/${id}`,
         {
           method: "DELETE",
+          headers: { "x-admin-secret": adminSecret },
         },
       );
       if (res.ok) fetchAllReviews();
@@ -155,6 +187,7 @@ export default function Admin() {
             required
           />
           <button type="submit">Wejdź</button>
+          {loginError && <p style={{ color: "red" }}>{loginError}</p>}
         </form>
       </div>
     );
@@ -191,7 +224,7 @@ export default function Admin() {
 
       <div className={styles.projectList}>
         <h3>Twoje Realizacje:</h3>
-        {projects.length === 0 && <p>Brak projektów в bazie.</p>}
+        {projects.length === 0 && <p>Brak projektów w bazie.</p>}
         {projects.map((project) => (
           <div key={project._id} className={styles.projectItem}>
             <span>{project.title}</span>

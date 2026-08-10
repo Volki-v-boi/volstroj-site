@@ -19,6 +19,33 @@ mongoose
   .then(() => console.log("✅ Połączono z MongoDB"))
   .catch((err) => console.error("❌ Błąd:", err));
 
+// ВАЖНО: раньше пароль проверялся ТОЛЬКО на фронтенде и был виден всем
+// в исходном коде страницы, а сам сервер принимал запросы на изменение
+// данных вообще без проверки. Теперь любое админское действие (добавить/
+// удалить проект, одобрить/удалить отзыв) требует правильный секретный
+// ключ в заголовке запроса — сервер сам его проверяет, а не доверяет фронту.
+function requireAdmin(req, res, next) {
+  const secret = req.headers["x-admin-secret"];
+  if (!process.env.ADMIN_SECRET) {
+    console.error("ADMIN_SECRET nie jest ustawiony na serwerze!");
+    return res.status(500).json({ error: "Serwer nie skonfigurowany" });
+  }
+  if (secret !== process.env.ADMIN_SECRET) {
+    return res.status(401).json({ error: "Brak uprawnień" });
+  }
+  next();
+}
+
+// Логин админки: фронтенд отправляет введённый пароль сюда, сервер сам
+// сверяет его с ADMIN_SECRET — сам пароль никогда не попадает в JS-бандл.
+app.post("/api/admin/login", (req, res) => {
+  const { password } = req.body;
+  if (password && password === process.env.ADMIN_SECRET) {
+    return res.json({ ok: true });
+  }
+  return res.status(401).json({ ok: false, error: "Błędne hasło" });
+});
+
 app.post("/api/leads", async (req, res) => {
   try {
     // 1. Сохраняем в базу данных
@@ -56,7 +83,7 @@ app.get("/api/projects", async (req, res) => {
   }
 });
 // Добавь это в server/index.js, если еще не сделал
-app.post("/api/projects", async (req, res) => {
+app.post("/api/projects", requireAdmin, async (req, res) => {
   try {
     const newProject = new Project(req.body);
     await newProject.save();
@@ -66,7 +93,7 @@ app.post("/api/projects", async (req, res) => {
   }
 });
 // Удаление проекта
-app.delete("/api/projects/:id", async (req, res) => {
+app.delete("/api/projects/:id", requireAdmin, async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
     res.json({ message: "Projekt usunięty!" });
@@ -95,7 +122,7 @@ app.get("/api/reviews", async (req, res) => {
     res.status(500).json({ error: "Błąd pobierania opinii" });
   }
 });
-app.get("/api/admin/reviews", async (req, res) => {
+app.get("/api/admin/reviews", requireAdmin, async (req, res) => {
   try {
     const allReviews = await Review.find().sort({ createdAt: -1 });
     res.json(allReviews);
@@ -105,7 +132,7 @@ app.get("/api/admin/reviews", async (req, res) => {
 });
 
 // 2. Одобрить отзыв (изменить статус с pending на approved)
-app.patch("/api/reviews/:id/approve", async (req, res) => {
+app.patch("/api/reviews/:id/approve", requireAdmin, async (req, res) => {
   try {
     const updatedReview = await Review.findByIdAndUpdate(
       req.params.id,
@@ -119,7 +146,7 @@ app.patch("/api/reviews/:id/approve", async (req, res) => {
 });
 
 // 3. Удалить отзыв (если это спам)
-app.delete("/api/reviews/:id", async (req, res) => {
+app.delete("/api/reviews/:id", requireAdmin, async (req, res) => {
   try {
     await Review.findByIdAndDelete(req.params.id);
     res.json({ message: "Opinia usunięta" });
