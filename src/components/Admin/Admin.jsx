@@ -16,7 +16,12 @@ async function uploadFilesToCloudinary(files) {
     );
     const data = await res.json();
     if (data.secure_url) {
-      urls.push(data.secure_url);
+      // ВАЖНО: без этого Cloudinary отдаёт фото "как есть" в сырых пикселях,
+      // игнорируя метку поворота из EXIF камеры телефона — из-за этого
+      // вертикально снятые фото показываются повёрнутыми/обрезанными не так,
+      // как задумано. a_exif заставляет применить поворот один раз при отдаче.
+      const rotatedUrl = data.secure_url.replace("/upload/", "/upload/a_exif/");
+      urls.push(rotatedUrl);
     }
   }
   return urls;
