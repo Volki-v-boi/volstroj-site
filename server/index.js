@@ -92,6 +92,24 @@ app.post("/api/projects", requireAdmin, async (req, res) => {
     res.status(500).json({ error: "Błąd dodawania projektu" });
   }
 });
+// Редактирование существующего проекта (название, описание, список фото —
+// включая порядок: первое фото в массиве = обложка на сайте)
+app.patch("/api/projects/:id", requireAdmin, async (req, res) => {
+  try {
+    const updated = await Project.findByIdAndUpdate(
+      req.params.id,
+      {
+        title: req.body.title,
+        description: req.body.description,
+        images: req.body.images,
+      },
+      { new: true },
+    );
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: "Błąd podczas edycji projektu" });
+  }
+});
 // Удаление проекта
 app.delete("/api/projects/:id", requireAdmin, async (req, res) => {
   try {
