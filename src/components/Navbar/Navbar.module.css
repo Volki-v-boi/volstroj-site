@@ -38,6 +38,12 @@
   font-weight: 700;
   color: #2d3436;
   text-decoration: none;
+  /* Защита от перемешивания цифр/символов в некоторых встроенных
+     браузерах (напр. внутри Facebook/Messenger) — без этого номер
+     иногда визуально коверкается из-за неверной обработки направления текста */
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {

@@ -37,7 +37,9 @@ export default function Footer() {
         <div className={styles.contact}>
           <h4>Kontakt</h4>
           <p>Email: volstroj2026@gmail.com</p>
-          <p>Tel: +48 660 018 024</p>
+          <p style={{ direction: "ltr", unicodeBidi: "isolate", whiteSpace: "nowrap" }}>
+            Tel: +48 660 018 024
+          </p>
           <p>Lokalizacja: Szczecin i okolice</p>
         </div>
       </div>
