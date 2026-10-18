@@ -1,6 +1,8 @@
 /* Твои существующие стили */
 .hero {
-  height: 80vh;
+  min-height: 80vh; /* min-height: контент не вылезает за блок на узких экранах */
+  padding: 100px 0 60px;
+  box-sizing: border-box;
   position: relative;
   background: url("https://unsplash.com") no-repeat center center/cover; /* Сменил фото на интерьерное */
   display: flex;
@@ -75,4 +77,14 @@
   padding: 5px 15px;
   border-radius: 20px;
   border: 1px solid #e67e22;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+    overflow-wrap: anywhere;
+  }
+  .benefits {
+    flex-wrap: wrap;
+  }
 }

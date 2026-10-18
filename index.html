@@ -12,9 +12,8 @@
       Wykończenia wnętrz Szczecin | Remonty mieszkań pod klucz - Volstroj
     </title>
 
-    <!-- Canonical: важно после смены домена на .pl — без этого Google может
-         индексировать и volstroj.vercel.app, и .pl как дубли -->
-    <link rel="canonical" href="https://www.volstroj.pl/" />
+    <!-- Canonical задаётся через Helmet на каждом маршруте (App.jsx / ServicePage.jsx),
+         чтобы на странице был ровно один canonical -->
 
     <!-- Open Graph — карточка при шаринге в соцсетях/мессенджерах -->
     <meta property="og:type" content="website" />
@@ -28,7 +27,6 @@
       property="og:description"
       content="Remonty mieszkań i domów pod klucz w Szczecinie. Profesjonalna ekipa, współpraca z architektem i gwarancja jakości. Sprawdź nasze realizacje!"
     />
-    <meta property="og:url" content="https://www.volstroj.pl/" />
     <meta property="og:image" content="https://www.volstroj.pl/og-cover.jpg" />
 
     <!-- Twitter Card -->
@@ -45,8 +43,8 @@
 
     <!-- JSON-LD: структурированные данные локального бизнеса.
          Это то, что помогает попасть в Google Maps / панель знаний.
-         ВАЖНО: замени telephone, streetAddress, geo на реальные —
-         это должно 1:1 совпадать с тем, что будет в Google Business Profile. -->
+         Адрес улицы не указан намеренно (бизнес выезжает к клиентам, service-area).
+         Если в Google Business Profile будет публичный адрес — добавь streetAddress 1:1. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -58,9 +56,8 @@
         "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "ZMIEŃ NA REALNY ADRES",
           "addressLocality": "Szczecin",
-          "postalCode": "70-000",
+          "addressRegion": "zachodniopomorskie",
           "addressCountry": "PL"
         },
         "areaServed": {

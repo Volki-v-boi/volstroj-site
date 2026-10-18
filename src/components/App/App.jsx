@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import { HelmetProvider, Helmet } from "react-helmet-async";
 import styles from "./App.module.css";
 import "../../index.css";
 
@@ -29,6 +29,10 @@ export default function App() {
               path="/"
               element={
                 <main>
+                  <Helmet>
+                    <link rel="canonical" href="https://www.volstroj.pl/" />
+                    <meta property="og:url" content="https://www.volstroj.pl/" />
+                  </Helmet>
                   <Hero />
                   <About />
                   <Partner />
