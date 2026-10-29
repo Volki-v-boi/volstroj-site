@@ -20,6 +20,25 @@ export default function Services() {
           </Link>
         ))}
       </div>
+
+      {/* Прайс-лист: файл лежит в public/cennik-volstroj.pdf */}
+      <div className={styles.priceActions}>
+        <a
+          href="/cennik-volstroj.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.priceBtn}
+        >
+          👁 Zobacz cennik
+        </a>
+        <a
+          href="/cennik-volstroj.pdf"
+          download="Cennik-Volstroj.pdf"
+          className={`${styles.priceBtn} ${styles.priceBtnOutline}`}
+        >
+          📄 Pobierz cennik (PDF)
+        </a>
+      </div>
     </section>
   );
 }
